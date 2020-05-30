@@ -14,6 +14,7 @@ def call(args) {
           CPPFLAGS = "${args.CPPFLAGS ?: ''}"
           CXXFLAGS = "${args.CXXFLAGS ?: '-O2 -g'}"
           LDFLAGS = "${args.LDFLAGS ?: ''}"
+          MAKEFLAGS = "-j$NUMCORES"
         }
       
         steps {
