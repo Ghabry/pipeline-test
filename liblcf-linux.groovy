@@ -1,5 +1,11 @@
-buildLiblcfAutotools(
+args = makeEnv("linux")
+
+args << [
   label: 'linux',
-  toolchain: 'toolchain-linux-static/linux-static',
-  CXXFLAGS: '-Wall -Wextra -O0 -g3',
-)
+  pre: "echo 'Hello World'",
+  make: ['check', 'dist', 'install'],
+  
+  CXXFLAGS: '-Wall -Wextra -O0 -g3'
+]
+
+buildLiblcfAutotools(args)

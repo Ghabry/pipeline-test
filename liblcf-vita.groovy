@@ -1,9 +1,9 @@
-opt = [
-  label: 'vita',
-  CXX: 'ccache arm-vita-eabi-g++',
-  CXXFLAGS: '-g0 -O2',
+args = makeEnv("vita")
+
+args << [
+  configure_args: "--disable-tools",
+
+  CXX: 'ccache arm-vita-eabi-g++'
 ]
 
-buildLiblcfAutotools(
-  opt + makeEnv()
-)
+buildLiblcfAutotools(args)

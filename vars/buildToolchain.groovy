@@ -1,18 +1,18 @@
 def call(args) {
   pipeline {
     agent {
-        label args.label
+      label args.label
     }
   
     stages {
       stage('Clear Workspace') {
         steps {
           cleanWs()
-        }  
+        }
       }
       stage('Checkout') {
         steps {
-          git 'https://github.com/easyrpg/buildscripts'
+          gitClone(args.branch, args.url, 'https://github.com/easyrpg/buildscripts')
         }  
       }
       stage('Download') {
