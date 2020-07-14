@@ -1,4 +1,4 @@
-args = makeEnv("win64")
+args = makeEnv("win32")
 
 args << [
   label: 'windows',
@@ -6,4 +6,4 @@ args << [
 ]
 
 args["buildtype"] = 'RelWithDebInfo'
-buildPlayerCMakeWindows(args)
+buildPlayerCmakeWindows(args)

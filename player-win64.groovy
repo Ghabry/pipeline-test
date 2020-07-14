@@ -6,4 +6,4 @@ args << [
 ]
 
 args["buildtype"] = 'RelWithDebInfo'
-buildPlayerCMakeWindows(args)
+buildPlayerCmakeWindows(args)
