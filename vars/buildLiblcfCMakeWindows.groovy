@@ -1,60 +1,39 @@
 def call(args) {
-  pipeline {
-    agent {
-      label args.label
-    }
-    
-    environment {
-      CXX = "${args.CXX}"
-      CPPFLAGS = "${args.CPPFLAGS}"
-      CXXFLAGS = "${args.CXXFLAGS}"
-      LDFLAGS = "${args.LDFLAGS}"
-    }
+  node(args.label) {
+    withEnv([
+      "CXX=${args.CXX}",
+      "CPPFLAGS=${args.CPPFLAGS}",
+      "CXXFLAGS=${args.CXXFLAGS}",
+      "LDFLAGS=${args.LDFLAGS}"]) {
 
-    stages {    
       stage('Checkout') {
-        steps {
-          gitClone(args.branch, args.url, 'https://github.com/easyrpg/liblcf')
-        }
+        gitClone(args.branch, args.url, 'https://github.com/easyrpg/liblcf')
       }
       
       stage('Pre Build') {
-        when {
-          expression { args.pre != null }
-        }
-        steps {
+        if (args.pre != null) {
           bat "${args.pre}"
         }
       }
 
       stage('Build') {
-        steps {
-          bat """${args.cmake_wrapper} cmake . -B${args.buildtype} -GNinja \
-                -DCMAKE_BUILD_TYPE=${args.buildtype} -DCMAKE_INSTALL_PREFIX=build \
-                ${args.cmake_args}"""
+        bat """${args.cmake_wrapper} cmake . -B${args.buildtype} -GNinja \
+              -DCMAKE_BUILD_TYPE=${args.buildtype} -DCMAKE_INSTALL_PREFIX=build \
+              ${args.cmake_args}"""
 
-          script {
-            for (cmd in args.make) {
-              bat "${args.cmake_wrapper} cmake --build ${args.buildtype} --target ${cmd}"
-            }
-          }
+        for (cmd in args.make) {
+          bat "${args.cmake_wrapper} cmake --build ${args.buildtype} --target ${cmd}"
         }
       }
     
       stage('Post Build') {
-        when {
-          expression { args.post != null }
-        }
-        steps {
+        if (args.post != null) {
           bat "${args.post}"
         }
       }
 
       stage('Collect Artifacts') {
-        when {
-          expression { args.artifacts == true }
-        }
-        steps {
+        if (args.artifacts == true) {
           dir("build") {
             bat "7z a -mx5 ../liblcf_${args.label}.zip ."
           }

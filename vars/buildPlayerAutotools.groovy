@@ -3,6 +3,7 @@ def call(args) {
     withEnv([
       "PKG_CONFIG_PATH=${args.PKG_CONFIG_PATH}",
       "PATH=${args.PATH}:${env.PATH}",
+      "CC=${args.CC}",
       "CXX=${args.CXX}",
       "CPPFLAGS=${args.CPPFLAGS}",
       "CXXFLAGS=${args.CXXFLAGS}",
@@ -10,7 +11,7 @@ def call(args) {
       "MAKEFLAGS=-j${env.NUMCORES ?: '2'}"]) {
   
       stage('Checkout') {
-        gitClone(args.branch, args.url, 'https://github.com/easyrpg/liblcf')
+        gitClone(args.branch, args.url, 'https://github.com/easyrpg/player')
       }
       
       stage('Pre Build') {
@@ -35,11 +36,15 @@ def call(args) {
       }
 
       stage('Collect Artifacts') {
-        if (args.artifacts == true) {
-          dir("build") {
-            sh "tar -czf ../liblcf_${args.label}.tar.gz include/ lib/"
+        if (args.artifacts != null) {
+          if (args.artifacts_cmd != null) {
+            dir("build") {
+              sh "${args.artifacts_cmd}"
+            }
           }
-          archiveArtifacts artifacts: "liblcf_${args.label}.tar.gz"
+          for (artifacts in args.artifacts) {
+            archiveArtifacts artifacts: "${artifacts}"
+          }  
         }
       }
     }
