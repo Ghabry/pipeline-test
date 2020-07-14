@@ -5,7 +5,6 @@ def call(args) {
     }
     
     environment {
-      PATH = "${args.PATH}:${env.PATH}"
       CXX = "${args.CXX}"
       CPPFLAGS = "${args.CPPFLAGS}"
       CXXFLAGS = "${args.CXXFLAGS}"
@@ -24,19 +23,19 @@ def call(args) {
           expression { args.pre != null }
         }
         steps {
-          sh "${args.pre}"
+          bat "${args.pre}"
         }
       }
 
       stage('Build') {
         steps {
-          sh """${args.cmake_wrapper} cmake . -B${args.buildtype} -GNinja -DCMAKE_PREFIX_PATH="${args.TOOLCHAIN_DIR}" \
+          bat """${args.cmake_wrapper} cmake . -B${args.buildtype} -GNinja \
                 -DCMAKE_BUILD_TYPE=${args.buildtype} -DCMAKE_INSTALL_PREFIX=build \
                 ${args.cmake_args}"""
 
           script {
             for (cmd in args.make) {
-              sh "${args.cmake_wrapper} cmake --build ${args.buildtype} --target ${cmd}"
+              bat "${args.cmake_wrapper} cmake --build ${args.buildtype} --target ${cmd}"
             }
           }
         }
@@ -47,7 +46,7 @@ def call(args) {
           expression { args.post != null }
         }
         steps {
-          sh "${args.post}"
+          bat "${args.post}"
         }
       }
 
@@ -57,9 +56,9 @@ def call(args) {
         }
         steps {
           dir("build") {
-            sh "tar -czf ../liblcf_${args.label}.tar.gz include/ lib/"
+            bat "7z a -mx5 ../liblcf_${args.label}.zip ."
           }
-          archiveArtifacts artifacts: "liblcf_${args.label}.tar.gz"
+          archiveArtifacts artifacts: "liblcf_${args.label}.zip"
         }
       }
     }

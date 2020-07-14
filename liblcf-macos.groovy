@@ -2,7 +2,7 @@ args = makeEnv("macos")
 
 args << [
   label: 'macos',
-  make: ['check', 'install']
+  make: ['check', 'install'],
   buildtype: 'RelWithDebInfo'
 ]
 

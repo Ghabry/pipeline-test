@@ -7,7 +7,7 @@ toolchain_dir
 @NonCPS
 Map call(which) {
   env = [
-    TOOLCHAIN_DIR: "${-> toolchain_dir}"
+    TOOLCHAIN_DIR: "${-> toolchain_dir}",
     PKG_CONFIG_PATH: "${-> toolchain_dir}/lib/pkgconfig",
     CXX: "",
     PATH: "",
@@ -22,7 +22,7 @@ Map call(which) {
     cmake_args: "",
     configure_wrapper: "",
     cmake_wrapper: "",
-    artifacts: true
+    artifacts: true,
   ]
 
   jobroot = "${-> WORKSPACE}/.."
@@ -54,8 +54,19 @@ Map call(which) {
     toolchain_dir = "${-> jobroot}/toolchain-macos/osx"
 
     env << [
-      cmake_args: "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DOSX_ARCHITECTURES=x86_64"
+      cmake_args: "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_SHARED_LIBS=OFF -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DOSX_ARCHITECTURES=x86_64"
     ]
+
+    return env
+  } else if (which == "windows") {
+    toolchain_dir = ""
+    
+    env << [
+      CXXFLAGS: "",
+      cmake_args: "-DSHARED_RUNTIME=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=${-> jobroot}/toolchain-windows/windows/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    ]
+
+    return env
   }
   
   assert(false)
