@@ -8,6 +8,10 @@ def call(args) {
       "CXXFLAGS=${args.CXXFLAGS}",
       "LDFLAGS=${args.LDFLAGS}"]) {
 
+      stage('Clear Workspace') {
+        cleanWs()
+      }
+
       stage('Checkout') {
         gitClone(args.branch, args.url, 'https://github.com/easyrpg/player')
       }

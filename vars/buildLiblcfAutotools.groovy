@@ -8,7 +8,11 @@ def call(args) {
       "CXXFLAGS=${args.CXXFLAGS}",
       "LDFLAGS=${args.LDFLAGS}",
       "MAKEFLAGS=-j${env.NUMCORES ?: '2'}"]) {
-  
+
+      stage('Clear Workspace') {
+        cleanWs()
+      }
+
       stage('Checkout') {
         gitClone(args.branch, args.url, 'https://github.com/easyrpg/liblcf')
       }
