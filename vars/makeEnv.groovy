@@ -9,8 +9,8 @@ liblcf_dir
 Map call(which) {
   env = [
     TOOLCHAIN_DIR: "${-> toolchain_dir}",
-    LIBLCF_DIR: "${-> liblcf_dir}",
-    PKG_CONFIG_PATH: "${-> toolchain_dir}/lib/pkgconfig:${-> liblcf_dir}/build/lib/pkgconfig",
+    LIBLCF_DIR: "${-> liblcf_dir}/build",
+    PKG_CONFIG_PATH: "${-> toolchain_dir}/lib/pkgconfig:${-> liblcf_dir}/lib/pkgconfig",
     CC: "",
     CXX: "",
     PATH: "",

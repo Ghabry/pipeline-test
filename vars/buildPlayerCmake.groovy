@@ -19,7 +19,8 @@ def call(args) {
       }
 
       stage('Build') {
-        sh """${args.cmake_wrapper} cmake . -B${args.buildtype} -GNinja -DCMAKE_PREFIX_PATH="${args.TOOLCHAIN_DIR}" \
+        sh """${args.cmake_wrapper} cmake . -B${args.buildtype} -GNinja \
+              -DCMAKE_PREFIX_PATH="${args.TOOLCHAIN_DIR};${args.LIBLCF_DIR}" \
               -DCMAKE_BUILD_TYPE=${args.buildtype} -DCMAKE_INSTALL_PREFIX=build \
               ${args.cmake_args}"""
 
