@@ -5,13 +5,11 @@ def call(args) {
     }
     
     environment {
-      PKG_CONFIG_PATH = "${args.PKG_CONFIG_PATH}"
       PATH = "${args.PATH}:${env.PATH}"
       CXX = "${args.CXX}"
       CPPFLAGS = "${args.CPPFLAGS}"
       CXXFLAGS = "${args.CXXFLAGS}"
       LDFLAGS = "${args.LDFLAGS}"
-      MAKEFLAGS = "-j${env.NUMCORES ?: '2'}"
     }
 
     stages {    
@@ -32,12 +30,13 @@ def call(args) {
 
       stage('Build') {
         steps {
-          sh "autoreconf -fi"
-          sh "${args.configure_wrapper} ./configure --host=${args.host} --prefix=$WORKSPACE/build --enable-static --disable-shared ${args.configure_args}"
+          sh """cmake . -B${args.buildtype} -GNinja -DCMAKE_PREFIX_PATH="${args.TOOLCHAIN_DIR}" \
+                -DCMAKE_BUILD_TYPE=${args.buildtype} -DCMAKE_INSTALL_PREFIX=${args.buildtype}/install \
+                ${args.cmake_args}"""
 
           script {
             for (cmd in args.make) {
-              sh "make ${cmd}"
+              sh "cmake --build ${args.buildtype} --target ${cmd}"
             }
           }
         }
@@ -57,8 +56,8 @@ def call(args) {
           expression { args.artifacts == true }
         }
         steps {
-          dir("build") {
-            sh "tar -czf ../liblcf_${args.label}.tar.gz include/ lib/"
+          dir("${args.buildtype}/install") {
+            sh "tar -czf ../../liblcf_${args.label}.tar.gz include/ lib/"
           }
           archiveArtifacts artifacts: "liblcf_${args.label}.tar.gz"
         }
