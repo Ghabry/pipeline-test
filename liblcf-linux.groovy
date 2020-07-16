@@ -1,11 +1,9 @@
-args = makeEnv("linux")
+node('linux') {
+    e = new env.Linux(this)
+    b = new build.AutotoolsLcf(this, e)
 
-args << [
-  label: 'linux',
-  pre: "echo 'Hello World'",
-  make: ['check', 'dist', 'install'],
-  
-  CXXFLAGS: '-Wall -Wextra -O0 -g3'
-]
+    cleanWs()
 
-buildLiblcfAutotools(args)
+    b.checkout("https://github.com/easyrpg/liblcf", "master")
+    b.runPipeline()
+}

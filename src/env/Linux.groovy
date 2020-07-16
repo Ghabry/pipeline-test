@@ -1,12 +1,20 @@
 package env
 
 @groovy.transform.InheritConstructors
-class Linux extends EnvBase {
-    def CC() {
-        return "gcc -static-libgcc -static-libstdc++"
+class Linux extends Env {
+    {
+        CC = "gcc -static-libgcc -static-libstdc++"
+        CXX = "gcc -static-libgcc -static-libstdc++"
+        CXXFLAGS='-Wall -Wextra -O0 -g3'
     }
 
-    def PKG_CONFIG_PATH() {
-        return "${s.WORKSPACE}/../toolchain-linux"
+    @NonCPS
+    def getToolchainDir() {
+        return getRoot() + "toolchain-linux-static/linux-static"
+    }
+
+    @NonCPS
+    def getLcfDir() {
+        return getRoot() + "liblcf-linux"
     }
 }
