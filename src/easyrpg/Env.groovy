@@ -11,14 +11,14 @@ class Env {
         this.paths = []
     }
 
-    @NonCPS
     def load(String path) {
-        def f = new File(path)
-        if (!f.exists()) {
+        if (!scr.fileExists(path)) {
             return
         }
 
-        f.eachLine { String line ->
+        def lines = scr.readFile(path).split("\n")
+
+        for (line in lines) {
             if (line.contains("=")) {
                 def val = line.replace("'", "").replace('"', "").split("=")
                 if (val[0] != "PATH") {

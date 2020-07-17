@@ -64,8 +64,10 @@ abstract class Build {
     }
 
     protected def prepare(String job, String system) {
-        env.load("$tmpDir/buildscripts/env/$system")
-        env.load("$tmpDir/buildscripts/env/$job")
+        scr.dir("$tmpDir") {
+            env.load("buildscripts/env/$system")
+            env.load("buildscripts/env/$job")
+        }
     }
 
     protected def build(String job, String system) {
@@ -76,13 +78,12 @@ abstract class Build {
     }
 
     protected def collectArtifacts() {
-        def f = new File("${scr.env.BASEDIR}/artifacts")
-        if (!f.exists()) {
+        if (!scr.fileExists("artifacts")) {
             scr.echo "No artifacts"
             return
         }
 
-        def artifacts = f.readLines()
+        def artifacts = scr.readFile("artifacts").split("\n")
         for (artifact in artifacts) {
             if (artifact.size() > 0) {
                 scr.echo "Archiving $artifact"

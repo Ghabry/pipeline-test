@@ -6,7 +6,7 @@ cmake_configure -DCMAKE_BUILD_TYPE="RelWithDebInfo"
 
 cmake_make check install
 
-(cd $BUILDDIR
+(cd $INSTALLDIR
     tar -czf "$BASEDIR/liblcf-macos.tar.gz" include/ lib/
 )
 

@@ -23,8 +23,8 @@ function autotools_make {
 }
 
 function cmake_configure {
-    cmake $BASEDIR -B$BUILDDIR -GNinja -DCMAKE_PREFIX_PATH="$PREFIXPATH" \
-        -DCMAKE_INSTALL_PREFIX=$INSTALLDIR $CMAKE_EXTRA_ARGS $@
+    cmake $BASEDIR -B$BUILDDIR -GNinja -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH" \
+        -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DBUILD_SHARED_LIBS=OFF $CMAKE_EXTRA_ARGS $@
 }
 
 function cmake_make {
