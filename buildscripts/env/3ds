@@ -1,0 +1,7 @@
+TARGET_HOST="arm-none-eabi"
+CC="ccache $TARGET_HOST-gcc"
+CXX="ccache $TARGET_HOST-g++"
+CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffunction-sections -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft"
+CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
+TOOLCHAIN_DIR="toolchain-3ds/3ds"
+LIBLCF_DIR="liblcf-3ds"

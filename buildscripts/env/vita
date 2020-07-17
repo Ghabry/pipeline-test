@@ -1,0 +1,7 @@
+TARGET_HOST="arm-vita-eabi"
+CC="ccache $TARGET_HOST-gcc"
+CXX="ccache $TARGET_HOST-g++"
+CFLAGS="-g0 -O2"
+CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
+TOOLCHAIN_DIR="toolchain-vita/vita"
+LIBLCF_DIR="liblcf-vita"
