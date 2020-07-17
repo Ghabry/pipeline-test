@@ -3,6 +3,7 @@ package easyrpg
 abstract class Build {
     protected final Script scr
     protected final Env env
+    protected String tmpDir
 
     public envExtra = [:]
     public pipelineRepo = "https://github.com/ghabry/pipeline-test"
@@ -35,7 +36,7 @@ abstract class Build {
     }
 
     protected def execute(String job, String system) {
-        def tmpDir = scr.pwd(tmp: true) + "/scripts"
+        tmpDir = scr.pwd(tmp: true) + "/scripts"
 
         env.env["CIBUILD"] = 1
         env.env["ROOTDIR"] = new File("${scr.env.WORKSPACE}/..").getCanonicalPath()
@@ -45,7 +46,7 @@ abstract class Build {
             scr.dir(tmpDir) {
                 checkout(pipelineRepo)
 
-                prepare()
+                prepare(job, system)
 
                 env.env << envExtra
             }
@@ -53,7 +54,7 @@ abstract class Build {
 
         scr.withEnv(env.makeEnv()) {
             scr.stage('Build') {
-                build()
+                build(job)
             }
 
             scr.stage('Artifacts') {

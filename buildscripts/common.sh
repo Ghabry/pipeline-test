@@ -34,6 +34,17 @@ function cmake_make {
     done
 }
 
+function build_toolchain {
+    (cd $1
+        ./0_build_everything.sh
+
+        # create portlib archive for convenience
+        tar cf $BASEDIR/$2_toolchain.tar.gz include/ lib/
+    )
+
+    artifact $2_toolchain.tar.gz
+}
+
 function set_version_string {
     commitcount=$(git rev-list $(git rev-list --tags --no-walk --max-count=1).. --count)
     shorthash=$(git rev-parse --short HEAD)

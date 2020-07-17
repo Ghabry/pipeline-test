@@ -39,8 +39,15 @@ class Env {
     @NonCPS
     def makeEnv() {
         def d = env.clone()
-        d["PKG_CONFIG_PATH"] = PKG_CONFIG_PATH()
-        d["CMAKE_PREFIX_PATH"] = CMAKE_PREFIX_PATH()
+
+        def pkg = PKG_CONFIG_PATH()
+        if (pkg.size() > 0) {
+            d["PKG_CONFIG_PATH"] = pkg
+        }
+        def cmake = CMAKE_PREFIX_PATH()
+        if (cmake.size() > 0) {
+            d["CMAKE_PREFIX_PATH"] = cmake
+        }
 
         scr.echo "Environment: ${d.toString()}"
 
