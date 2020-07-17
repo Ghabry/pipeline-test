@@ -21,7 +21,9 @@ class Env {
         f.eachLine { String line ->
             if (line.contains("=")) {
                 def val = line.replace("'", "").replace('"', "").split("=")
-                env[val[0]] = val[1]
+                if (val[0] != "PATH") {
+                    env[val[0]] = val[1]
+                }
             }
         }
     }

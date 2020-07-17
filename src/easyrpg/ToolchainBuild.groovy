@@ -9,4 +9,8 @@ class ToolchainBuild extends Build {
     protected def prepare(String job, String system) {
         // prevent loading of environment
     }
+
+    protected def build(String job, String system) {
+        scr.sh "$tmpDir/buildscripts/build.sh ${job}"
+    }
 }

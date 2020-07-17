@@ -54,7 +54,7 @@ abstract class Build {
 
         scr.withEnv(env.makeEnv()) {
             scr.stage('Build') {
-                build(job)
+                build(job, system)
             }
 
             scr.stage('Artifacts') {
@@ -70,8 +70,11 @@ abstract class Build {
         env.load("$tmpDir/buildscripts/env/$job")
     }
 
-    protected def build(String job) {
-        scr.sh "$tmpDir/buildscripts/build.sh ${job}"
+    protected def build(String job, String system) {
+        scr.sh """
+        . "$tmpDir/buildscripts/env/$system"
+        $tmpDir/buildscripts/build.sh ${job}
+        """
     }
 
     protected def collectArtifacts() {
