@@ -53,6 +53,8 @@ fi
 
 rm -f $BASEDIR/artifacts
 
+set -x
+
 (cd $BASEDIR
-    $SCRIPT_DIR/jobs/$BUILDJOB.sh
+    . $SCRIPT_DIR/jobs/$BUILDJOB.sh
 )

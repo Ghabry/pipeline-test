@@ -1,4 +1,4 @@
 CXXFLAGS="-Wno-warn-absolute-paths -g0 -O2"
-TOOLCHAIN_DIR="toolchain-emscripten/emscripten"
+TOOLCHAIN="toolchain-emscripten/emscripten"
 LIBLCF="liblcf-js"
 EM_PKG_CONFIG_PATH="$PKG_CONFIG_PATH"
