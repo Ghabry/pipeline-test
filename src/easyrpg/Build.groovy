@@ -61,8 +61,6 @@ abstract class Build {
                 collectArtifacts()
             }
         }
-
-        env.paths.add(0, "${env.env['BASEDIR']}/install")
     }
 
     protected def prepare(String job, String system) {

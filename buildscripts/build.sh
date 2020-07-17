@@ -51,9 +51,6 @@ if [ -z "$MAKEFLAGS" ]; then
     fi
 fi
 
-TOOLCHAIN_DIR=$ROOTDIR/$TOOLCHAIN_DIR
-LIBLCF_DIR=$ROOTDIR/$LIBLCF_DIR
-
 rm -f $BASEDIR/artifacts
 
 (cd $BASEDIR

@@ -26,15 +26,22 @@ class Env {
                 }
             }
         }
+
+        if (env.containsKey("LIBLCF") && !env.containsKey("LIBLCF_DIR")) {
+            env["LIBLCF_DIR"] = "${env['ROOTDIR']}/${env['LIBLCF']}/install"
+        }
+        if (env.containsKey("TOOLCHAIN") && !env.containsKey("TOOLCHAIN_DIR") {
+            env["TOOLCHAIN_DIR"] = "${env['ROOTDIR']}/${env['TOOLCHAIN_DIR']}"
+        }
     }
 
     @NonCPS
     final def initPaths() {
         if (env.containsKey("LIBLCF_DIR")) {
-            this.paths.add("${env['ROOTDIR']}/${env['LIBLCF_DIR']}/install")
+            this.paths.add(env['LIBLCF_DIR'])
         }
         if (env.containsKey("TOOLCHAIN_DIR")) {
-            this.paths.add("${env['ROOTDIR']}/${env['TOOLCHAIN_DIR']}")
+            this.paths.add(env['TOOLCHAIN_DIR'])
         }
     }
 

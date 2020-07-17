@@ -15,6 +15,9 @@ class PlayerBuild extends Build {
                 skip_artifacts = true
                 execute(lcfJob, system)
                 skip_artifacts = false
+
+                env.paths.add(0, "${env.env['BASEDIR']}/install")
+                env.env["LIBLCF_DIR"] = "${env.env['BASEDIR']}/install"
             }
         }
 
