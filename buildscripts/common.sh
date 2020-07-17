@@ -9,7 +9,7 @@ function autotools_configure {
     autoreconf -fi
     (cd $BUILDDIR
         $BASEDIR/configure --prefix=$INSTALLDIR --disable-shared --enable-static \
-            --host=$TARGET_HOST $@
+            --host=$TARGET_HOST $CONFIGURE_EXTRA_ARGS $@
     )
 }
 
@@ -24,7 +24,7 @@ function autotools_make {
 
 function cmake_configure {
     cmake $BASEDIR -B$BUILDDIR -GNinja -DCMAKE_PREFIX_PATH="$PREFIXPATH" \
-        -DCMAKE_INSTALL_PREFIX=$INSTALLDIR $@
+        -DCMAKE_INSTALL_PREFIX=$INSTALLDIR $CMAKE_EXTRA_ARGS $@
 }
 
 function cmake_make {

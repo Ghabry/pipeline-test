@@ -30,7 +30,7 @@ class Env {
         if (env.containsKey("LIBLCF") && !env.containsKey("LIBLCF_DIR")) {
             env["LIBLCF_DIR"] = "${env['ROOTDIR']}/${env['LIBLCF']}/install"
         }
-        if (env.containsKey("TOOLCHAIN") && !env.containsKey("TOOLCHAIN_DIR") {
+        if (env.containsKey("TOOLCHAIN") && !env.containsKey("TOOLCHAIN_DIR")) {
             env["TOOLCHAIN_DIR"] = "${env['ROOTDIR']}/${env['TOOLCHAIN_DIR']}"
         }
     }
