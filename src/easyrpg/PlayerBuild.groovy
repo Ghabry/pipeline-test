@@ -5,9 +5,11 @@ class PlayerBuild extends Build {
     def skip_artifacts = false
 
     def run(String job, String lcfJob, String system) {
-        if ("XXX".endsWith("-stable")) {
+        def branch = scr.params.BRANCH
+
+        if (branch != null && branch.endsWith("-stable")) {
             // Handle stable build
-            def branch = "XXX".replace("-stable", "").replace("-", ".")
+            branch = branch.replace("-stable", "").replace("-", ".")
             scr.echo "Stable branch. Building liblcf ${branch}"
 
             scr.dir(scr.pwd(tmp: true) + "/liblcf") {

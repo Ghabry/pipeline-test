@@ -17,7 +17,15 @@ abstract class Build {
         }
     }
 
-    def checkout(String url, String branch = "master") {
+    def checkout(String url, String branch = "") {
+        if (branch.size() == 0) {
+            if (scr.params.BRANCH != null) {
+                branch = scr.params.BRANCH
+            } else {
+                branch = "master"
+            }
+        }
+
         scr.stage('Checkout') {
             //scr.git branch: branch, url: url
             scr.checkout([$class: 'GitSCM',
@@ -44,7 +52,7 @@ abstract class Build {
 
         scr.stage('Prepare') {
             scr.dir(tmpDir) {
-                checkout(pipelineRepo)
+                checkout(pipelineRepo, "master")
 
                 prepare(job, system)
 
