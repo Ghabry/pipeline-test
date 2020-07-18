@@ -47,7 +47,7 @@ if [ -z "$MAKEFLAGS" ]; then
     if [[ "$OSTYPE" == "darwin"* ]]; then
         MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN)"
     else
-        MAKEFLAGS="-j${nproc}"
+        MAKEFLAGS="-j$(nproc)"
     fi
 fi
 
