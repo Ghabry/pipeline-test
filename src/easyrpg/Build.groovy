@@ -66,7 +66,7 @@ abstract class Build {
             }
 
             scr.stage('Artifacts') {
-                collectArtifacts()
+                collectArtifacts(system)
             }
         }
     }
@@ -85,7 +85,7 @@ abstract class Build {
         """
     }
 
-    protected def collectArtifacts() {
+    protected def collectArtifacts(String system) {
         if (!scr.fileExists("artifacts")) {
             scr.echo "No artifacts"
             return
@@ -96,6 +96,17 @@ abstract class Build {
             if (artifact.size() > 0) {
                 scr.echo "Archiving $artifact"
                 scr.archiveArtifacts artifacts: artifact
+            }
+        }
+
+        if (scr.params.BRANCH != null && scr.params.BRANCH.endsWith("-stable")) {
+            for (artifact in artifacts) {
+                def file = scr.readFile(file: artifact, encoding: "Base64")
+                def outPath = "${scr.env.JENKINS_HOME}/ci-archives/$system"
+                new File(outPath).mkdirs()
+                def artName = new File("$artifact").getName()
+                def outFile = new File("$outPath/$artName")
+                outFile.bytes = file.decodeBase64()
             }
         }
     }

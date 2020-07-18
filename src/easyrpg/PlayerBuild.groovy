@@ -26,9 +26,9 @@ class PlayerBuild extends Build {
         execute(job, system)
     }
 
-    protected def collectArtifacts() {
+    protected def collectArtifacts(String system) {
         if (!skip_artifacts) {
-            super.collectArtifacts()
+            super.collectArtifacts(system)
         }
     }
 }
