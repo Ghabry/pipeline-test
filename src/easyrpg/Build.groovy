@@ -85,10 +85,7 @@ abstract class Build {
     }
 
     protected def build(String job, String system) {
-        scr.sh """
-        . "$tmpDir/buildscripts/env/$system"
-        $tmpDir/buildscripts/build.sh ${job}
-        """
+        scr.sh """$tmpDir/buildscripts/build.sh ${job}"""
     }
 
     protected def collectArtifacts(String system) {

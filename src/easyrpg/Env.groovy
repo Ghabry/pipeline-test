@@ -16,7 +16,9 @@ class Env {
             return
         }
 
-        def lines = scr.readFile(path).split("\n")
+        //scr.sh returnStdout: true
+
+        /*def lines = scr.readFile(path).split("\n")
 
         for (line in lines) {
             if (line.contains("=")) {
@@ -25,6 +27,18 @@ class Env {
                     env[val[0]] = val[1]
                 }
             }
+        }*/
+        def props = scr.readProperties interpolate: true, file: path
+
+        for (prop in props) {
+            def val = prop.value
+            if (val.startsWith('"')) {
+                val = val[1..-1]
+            }
+            if (val.endsWith('"')) {
+                val = val[0..-2]
+            }
+            env[prop.key] = val
         }
 
         if (env.containsKey("LIBLCF") && !env.containsKey("LIBLCF_DIR")) {
