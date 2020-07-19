@@ -58,7 +58,13 @@ abstract class Build {
 
         scr.stage('Prepare') {
             scr.dir(tmpDir) {
-                checkout(pipelineRepo, "master")
+                scr.checkout([$class: 'GitSCM',
+                    branches: [[name: "master" ]],
+                    userRemoteConfigs: [[url: pipelineRepo ]],
+                    extensions: [
+                        [$class: 'DisableRemotePoll'],
+                        [$class: 'PathRestriction', excludedRegions: '', includedRegions: '/invalid/path/to/disable/poll']]
+                ])
 
                 prepare(job, system)
 
