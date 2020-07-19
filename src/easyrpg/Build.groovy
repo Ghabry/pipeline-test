@@ -27,13 +27,19 @@ abstract class Build {
         }
 
         scr.stage('Checkout') {
-            //scr.git branch: branch, url: url
-            scr.checkout([$class: 'GitSCM',
-                branches: [[name: branch ]],
-                userRemoteConfigs: [[url: url]],
-                extensions: [[$class: 'CloneOption',
-                    depth: 0,
-                    noTags: false]]])
+            if (branch.contains("/pr/")) {
+                scr.checkout([$class: 'GitSCM',
+                    branches: [[name: branch ]],
+                    userRemoteConfigs: [[refspec: "+refs/pull/*:refs/remotes/origin/pr/*", url: url ]]
+                ])
+            } else {
+                scr.checkout([$class: 'GitSCM',
+                    branches: [[name: branch ]],
+                    userRemoteConfigs: [[url: url]],
+                    extensions: [[$class: 'CloneOption',
+                        depth: 0,
+                        noTags: false]]])
+            }
         }
     }
 
